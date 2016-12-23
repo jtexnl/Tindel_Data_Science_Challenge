@@ -1,0 +1,8 @@
+pymongo
+sklearn
+numpy
+pandas
+pprint
+matplotlib
+spacy
+jupyter
