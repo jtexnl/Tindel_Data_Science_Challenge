@@ -16,8 +16,6 @@ RUN mkdir -p /data/db
 
 EXPOSE 27017
 
-ENTRYPOINT ["/usr/bin/mongod"]
+CMD ["/usr/bin/mongod" "--smallfiles"]
 
-RUN mongo --port 27017
-
-RUN mongoimport --db newYorkerTest --collection reviews --drop --file yelp_academic_dataset_review.json
+#RUN mongoimport --db newYorkerTest --collection reviews --drop --file yelp_academic_dataset_review.json

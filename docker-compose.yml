@@ -1,9 +1,11 @@
-main:
-    build: .
-    volumes:
-        - .:/usr/src/app
-    command: jupyter notebook
-    links: 
-        - db
+web:
+  build: .
+  command: jupyter notebook
+  ports:
+    - "5000:5000"
+  volumes:
+    - .:/usr/src/app
+  links:
+    - db
 db:
-    image: mongo
+  image: mongo
