@@ -1,5 +1,3 @@
-# Tindel_Data_Science_Challenge
-
 ## How to run the code
 
 ### Docker
@@ -14,4 +12,8 @@ While most of this package is self-contained in Docker, you will need to have th
 
 Once you build the docker image, a Mongodb instance will be created, and the dataset will be inserted into the database for use in the code.
 
-### 
+### Starting the Program
+
+Once you have cloned the repo, downloaded the data, and moved it to the folder where the code is, type ```docker-build compose``` to begin the setup process. This will take some time. 
+
+Once the docker file has built, type ```docker-compose build``` and another set of dowloads will start. Once they are complete, type ```docker-compose up``` and follow the link that is displayed in stdout to your localhost instance where the notebook should be visible. 
