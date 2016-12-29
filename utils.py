@@ -1,21 +1,29 @@
 from classes import reviewSet
 from pymongo import MongoClient
 import numpy as np
-from sklearn.svm import LinearSVC
+from sklearn.linear_model import SGDClassifier
 from sklearn.externals import joblib
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn import metrics
 
 def pull_classify_and_dump(dataset, name, canada = False):
     reviews = reviewSet(dataset, canada)
-    vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
-    classifier = SGDClassifier(alpha = .0001, n_iter = 10, penalty = 'L2')
-    X = vectorizer.fit_transform(reviews.dict['features'])
-    classifier.fit(X, reviews.dict['labels'])
-    joblib.dump(vectorizer, name + '_vectorizer.pkl')
-    joblib.dump(classifier, name + '_classifier.pkl')
-    joblib.dump(dataset, name + '_dataset.pkl')
-    del reviews
+    if len(reviews.dict['labels']) < 100:
+        print('Insufficient Data. Please try a different location.')
+    else:
+        vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5, stop_words='english')
+        classifier = SGDClassifier(alpha = .0001, n_iter = 10, penalty = 'L2')
+        X = vectorizer.fit_transform(reviews.dict['features'])
+        classifier.fit(X, reviews.dict['labels'])
+        joblib.dump(vectorizer, name + '_vectorizer.pkl')
+        joblib.dump(classifier, name + '_classifier.pkl')
+        joblib.dump(dataset, name + '_dataset.pkl')
+        del reviews
+
+def reload(region):
+    vectorizer = joblib.load(region + '_vectorizer.pkl')
+    classifier = joblib.load(region + '_classifier.pkl')
+    return vectorizer, classifier
 
 def n_most_least_positive(region, n, print_output = True):
     vectorizer, classifier = reload(region)
@@ -38,8 +46,10 @@ def top_n_by_region(inputData, name, n, states = True, cities = False, check_eng
     client = MongoClient()
     db = client.newYorkerTest
     businesses = db.businesses
+    print("Running business database query")
     cursor = businesses.find().limit(1000000)
     region_businesses = []
+    print("Filtering database response")
     if states:
         for element in cursor:
             if states:
@@ -57,5 +67,7 @@ def top_n_by_region(inputData, name, n, states = True, cities = False, check_eng
             elif type(inputData) is str:
                 if element['city'] == inputData:
                     region_businesses.append(element['business_id'])
+    print("Running Review Database Query...This may take some time")
     pull_classify_and_dump(region_businesses, name, check_english)
+    print("Running Classifier")
     n_most_least_positive(name, n, print_output = True)
