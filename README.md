@@ -1,4 +1,14 @@
+#Introduction
+
+This repository represents my (John Tindel's) submission to New Yorker in support of my candidacy for the role of data scientist. The goal of the exercise was to, given a set of data from Yelp, come up with some interesting questions around the data and write a program using data science techniques to answer the question. 
+
+The question I chose to answer was whether there were regional variations in how people express positive/negative sentiments. I will explore this question in-depth in the Jupyter notebook found in this repo, or you can run my CLI tool for getting the top n positive/negative words for a given geographic area by following the setup instructions below.
+
 # How to run the code
+
+This repo contains two major components: a Jupyter notebook that allows the user to explore my thought process in putting this exercise, as well as a CLI tool that serves as a proof of concept for how a tool like this might work. Nothing is required if you want to view the notebook: Github will show all of my work and its output. 
+
+If you would like to employ my CLI tool (which is currently very much a proof-of-concept, not a production model), follow the steps below to prepare your environment. I have included instructions for users who would like to use Docker and those who would prefer not to.
 
 ## With Docker
 
@@ -6,7 +16,7 @@ In order to run the code in this repo, you will need to first have [Docker](http
 
 ### Data
 
-While most of this package is self-contained in Docker, you will need to have the dataset, which can't be stored in this repo. You should download the Yelp dataset from [this link](https://www.yelp.com/dataset_challenge/dataset) and store it in the directory with the rest of the code from this repo. You will only need the 'yelp_academic_dataset_review.json' file. If you need to move it from your downloads folder (from this repo folder), the command is:
+While most of this package is self-contained in Docker, you will need to have the dataset, which can't be stored in this repo (both due to its size and due to the Yelp ToS). You should download the Yelp dataset from [this link](https://www.yelp.com/dataset_challenge/dataset) and store it in the directory with the rest of the code from this repo. You will only need the 'yelp_academic_dataset_review.json' file. If you need to move it from your downloads folder (from this repo folder), the command is:
 
 ```mv path/to/downloads/yelp_academic_dataset_review.json . ```
 
@@ -14,9 +24,9 @@ Once you build the docker image, a Mongodb instance will be created, and the dat
 
 ### Starting the Program
 
-Once you have cloned the repo, downloaded the data, and moved it to the folder where the code is, type ```docker-build compose``` to begin the setup process. This will take some time. 
+Once you have cloned the repo, downloaded the data, and moved it to the folder where the code is, type ```docker-build compose``` to begin the setup process. This will take some time, as the composition will involve migrating a very large file to MongoDB and the installation of some large libraries from SpaCy. 
 
-Once the docker file has built, type ```docker-compose build``` and another set of dowloads will start. Once they are complete, type ```docker-compose up``` and follow the link that is displayed in stdout to your localhost instance where the notebook should be visible. 
+Once the docker file has built, type ```docker-compose build``` and another set of dowloads will start. The CLI should eventually open the program and you will see the instruction prompts. If this fails, try following the non-Docker instructions to install/download.
 
 ## Without Docker
 
